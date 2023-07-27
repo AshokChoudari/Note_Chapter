@@ -1,0 +1,135 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Navbar</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container mt-5 col-6" >
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Chapter Name" aria-label="Recipient's username" aria-describedby="button-addon2" id="inputTag">
+                <button id="add-btn" class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+            </div>
+            <ul id="ulTag" class="list-group">
+              <h1 id="emptyMSG">Add something here</h1>
+                <!-- <li class="list-group-item d-flex justify-content-between ">
+                    <h2 class="flex-grow-1">Chapter 1 </h2>
+                    <button class="btn btn-warning mx-3" onclick="editBtn(this)">Edit</button>
+                    <button class="btn btn-danger" onclick="removeNote(this)">Remove</button>
+                    
+                </li> -->
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        var preVal
+        var arr=[];
+        let addBtn=document.getElementById('add-btn')
+        addBtn.addEventListener('click',addChapter)
+        function addChapter(e){
+
+            const inputValue=e.srcElement.previousElementSibling.value
+            
+            console.log(inputValue)
+            e.srcElement.previousElementSibling.value=""
+            if(arr.includes(inputValue)){
+              alert("Already Exits")
+            }
+            else if(inputValue==""){
+              alert("It is Empty")
+            }
+            else{
+              const newLi=document.createElement('li')
+              // newLi.classList.add('list-group-item')
+              arr.push(inputValue)
+              newLi.className='list-group-item d-flex justify-content-between'
+              newLi.innerHTML=`<h2 class="flex-grow-1">${inputValue}</h2>
+                      <button class="btn btn-warning mx-3" onclick="editBtn(this)">Edit</button>
+                      <button class="btn btn-danger" onclick="removeNote(this)">Remove</button>`
+              const ulTag=document.getElementById('ulTag')
+              ulTag.appendChild(newLi)
+              const Empy=document.getElementById("emptyMSG")
+              // console.log(Empy!=null)
+              if(Empy  !=null){
+                Empy.remove()
+              }
+            }
+        }
+
+        function removeNote(e){
+          // console.log(e.parentElement)
+          const valRem=e.previousElementSibling.previousElementSibling.textContent;
+          // console.log(valRem)
+          arr.splice(arr.indexOf(valRem),1);
+    
+          e.parentElement.remove()
+          // console.log(e.parentElement)
+          const ulTag=document.getElementById("ulTag")
+          // console.log(ulTag.childElementCount)
+          const isEmpty=ulTag.childElementCount;
+          if(isEmpty<=0){
+            ulTag.innerHTML=`
+            <h1 id="emptyMSG">Is Empty please add something</h1>
+            `
+          }
+        }
+
+        function editBtn(e){
+          // console.log(e.previousElementSibling.textContent)
+          if(e.previousElementSibling.textContent!=""){
+            preVal=e.previousElementSibling.textContent
+          }
+          
+          if(e.textContent=="Done"){
+            e.textContent="Edit"
+            const newH=document.createElement("h2")
+            newH.className="flex-grow-1"
+            arr[arr.indexOf(preVal)]=e.previousElementSibling.value
+            newH.innerText=e.previousElementSibling.value
+            e.parentElement.replaceChild(newH,e.previousElementSibling)
+          }
+          else{
+            e.textContent="Done"
+            const editVal=e.previousElementSibling.textContent;
+            const curInput=document.createElement("input")
+            curInput.type="text"
+            curInput.className="form-control"
+            curInput.id="inputTag"
+            curInput.value=editVal
+            e.parentElement.replaceChild(curInput,e.previousElementSibling)
+          }
+        }
+        
+    </script>
+</body>
+</html>
